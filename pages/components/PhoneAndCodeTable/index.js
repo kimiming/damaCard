@@ -126,7 +126,7 @@ const PhoneTable = (props) => {
       code: record.code,
     };
 
-    fetch("http://localhost:3000/api/updataCode", {
+    fetch("https://dama-card.vercel.app/api/updataCode", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -144,7 +144,9 @@ const PhoneTable = (props) => {
     console.log("edit", record);
   };
   const getUnserPhone = () => {
-    fetch(`http://localhost:3000/api/getPhoneNumbersByStatus?phoneStatus=1`)
+    fetch(
+      `https://dama-card.vercel.app/api/getPhoneNumbersByStatus?phoneStatus=1`
+    )
       .then((response) => response.json())
       .then((data) => {
         // console.log(data.rows);

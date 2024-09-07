@@ -13,7 +13,7 @@ const SummaryPhone = (props) => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:3000/api/getAllPhoneNumbers"
+        "https://dama-card.vercel.app/api/getAllPhoneNumbers"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
