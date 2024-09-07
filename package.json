@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@zeit/next-less": "^1.0.1",
     "antd": "^5.20.5",
     "cors": "^2.8.5",
     "less": "^4.2.0",
