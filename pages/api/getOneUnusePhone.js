@@ -1,4 +1,5 @@
-import { getOneUnusePhoneNumber } from "../../services/dbService";
+// import { getOneUnusePhoneNumber } from "../../services/dbService";
+import { getOneUnusePhoneNumber } from "../../services/pgService";
 import Cors from "cors";
 
 // 初始化 CORS 中间件

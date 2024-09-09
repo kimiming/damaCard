@@ -1,4 +1,5 @@
-import { insertMultiplePhone } from "../../services/dbService";
+// import { insertMultiplePhone } from "../../services/dbService";
+import { insertMultiplePhone } from "../../services/pgService";
 import Cors from "cors";
 
 // 初始化 CORS 中间件

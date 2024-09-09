@@ -13,7 +13,7 @@ const SummaryPhone = (props) => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://dama-card.vercel.app/api/getAllPhoneNumbers"
+        "http://localhost:3000/api/getAllPhoneNumbers"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -30,7 +30,7 @@ const SummaryPhone = (props) => {
   const handleDeleteAll = async () => {
     try {
       const response = await fetch(
-        "https://dama-card.vercel.app/api/deleteAllPhoneCodes",
+        "http://localhost:3000/api/deleteAllPhoneCodes",
         {
           method: "DELETE",
           headers: {

@@ -13,7 +13,7 @@ const SummaryPhone = (props) => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://dama-card.vercel.app/api/getAllPhoneNumbers"
+        "http://localhost:3000/api/getAllPhoneNumbers"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -42,8 +42,8 @@ const SummaryPhone = (props) => {
     },
     {
       title: "PhoneNumber",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
+      dataIndex: "phonenumber",
+      key: "phonenumber",
       width: 250,
 
       render: (txt) => <div style={{ fontWeight: "bold" }}>{txt}</div>,
@@ -58,27 +58,27 @@ const SummaryPhone = (props) => {
     {
       title: "PhoneStatus",
       width: 150,
-      dataIndex: "phoneStatus",
-      key: "phoneStatus",
+      dataIndex: "phonestatus",
+      key: "phonestatus",
       align: "center",
       render: (txt, record) => {
         return (
           <Tag
             color={
-              record.phoneStatus === "0"
+              record.phonestatus === "0"
                 ? "volcano"
-                : record.phoneStatus === "1"
+                : record.phonestatus === "1"
                 ? "green"
-                : record.phoneStatus === "2"
+                : record.phonestatus === "2"
                 ? "blue"
                 : "red"
             }
           >
-            {record.phoneStatus === "0"
+            {record.phonestatus === "0"
               ? "unuse"
-              : record.phoneStatus === "1"
+              : record.phonestatus === "1"
               ? "using"
-              : record.phoneStatus === "2"
+              : record.phonestatus === "2"
               ? "used"
               : "ban"}
           </Tag>
@@ -87,24 +87,24 @@ const SummaryPhone = (props) => {
     },
     {
       title: "CodeStatus",
-      dataIndex: "codeStatus",
-      key: "codeStatus",
+      dataIndex: "codestatus",
+      key: "codestatus",
       align: "center",
       width: 150,
       render: (txt, record) => {
         return (
           <Tag
             color={
-              record.codeStatus === "0"
+              record.codestatus === "0"
                 ? "volcano"
-                : record.codeStatus === "1"
+                : record.codestatus === "1"
                 ? "green"
                 : "red"
             }
           >
-            {record.codeStatus === "0"
+            {record.codestatus === "0"
               ? "no input"
-              : record.codeStatus === "1"
+              : record.codestatus === "1"
               ? "availble"
               : "unavailable"}
           </Tag>
@@ -113,24 +113,23 @@ const SummaryPhone = (props) => {
     },
     {
       title: "CreateTime",
-      dataIndex: "createTime",
-      key: "createTime",
+      dataIndex: "createtime",
+      key: "createtime",
       align: "center",
       width: 200,
-      render: (text) => formatDate(text),
     },
     {
       title: "UpdateTime",
-      dataIndex: "updateTime",
-      key: "updateTime",
+      dataIndex: "updatetime",
+      key: "updatetime",
       align: "center",
       width: 200,
       render: (text) => (text ? formatDate(text) : ""),
     },
     {
       title: "Log",
-      dataIndex: "desc",
-      key: "desc",
+      dataIndex: "log",
+      key: "log",
     },
   ];
 

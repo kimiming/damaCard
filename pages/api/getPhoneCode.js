@@ -1,5 +1,6 @@
 import { message } from "antd";
-import { getCodeByPhoneNumber } from "../../services/dbService";
+// import { getCodeByPhoneNumber } from "../../services/dbService";
+import { getCodeByPhoneNumber } from "../../services/pgService";
 import Cors from "cors";
 
 // 初始化 CORS 中间件
@@ -20,9 +21,9 @@ function runMiddleware(req, res, fn) {
 }
 
 // 辅助函数：包装 getPhoneNumbersByStatus 为 Promise
-function getCodeByPhoneNumberPromise(phoneNumber) {
+function getCodeByPhoneNumberPromise(phonenumber) {
   return new Promise((resolve, reject) => {
-    getCodeByPhoneNumber(phoneNumber, (err, rows) => {
+    getCodeByPhoneNumber(phonenumber, (err, rows) => {
       if (err) {
         return reject(err);
       }
@@ -36,13 +37,13 @@ export default async function handler(req, res) {
   await runMiddleware(req, res, cors);
 
   const { method, query } = req;
-  const { phoneNumber } = query;
+  const { phonenumber } = query;
 
   switch (method) {
     case "GET":
       try {
         // 等待 getPhoneNumbersByStatus 完成
-        const rows = await getCodeByPhoneNumberPromise(phoneNumber);
+        const rows = await getCodeByPhoneNumberPromise(phonenumber);
         res.status(200).json({ rows, message: "success" });
       } catch (err) {
         res.status(500).json({ error: err.message });

@@ -1,4 +1,5 @@
-import { deleteAllPhoneCodes } from "../../services/dbService";
+// import { deleteAllPhoneCodes } from "../../services/dbService";
+import { deleteAllPhoneNumbers } from "../../services/pgService";
 import Cors from "cors";
 
 // 初始化 CORS 中间件
@@ -21,7 +22,7 @@ function runMiddleware(req, res, fn) {
 // 辅助函数：包装 deleteAllPhoneNumbers 为 Promise
 function deleteAllPhoneNumbersPromise(callback) {
   return new Promise((resolve, reject) => {
-    deleteAllPhoneCodes((err) => {
+    deleteAllPhoneNumbers((err) => {
       if (err) {
         return reject(err);
       }

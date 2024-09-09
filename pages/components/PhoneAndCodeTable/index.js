@@ -11,9 +11,9 @@ const PhoneTable = (props) => {
     {
       key: "1",
       id: "",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
-      phoneStatus: "0",
+      phonestatus: "0",
     },
   ];
   const [data, setData] = useState(initialData);
@@ -26,16 +26,16 @@ const PhoneTable = (props) => {
     },
     {
       title: "Phone",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
+      dataIndex: "phonenumber",
+      key: "phonenumber",
       width: 250,
       render: (text, record) => {
         return (
           <Input
             disabled
             style={{ fontWeight: "bold" }}
-            value={record.phoneNumber}
-            onChange={(e) => handleInputChange(e, record, "phone")}
+            value={record.phonenumber}
+            onChange={(e) => handleInputChange(e, record, "phonenumber")}
           />
         );
       },
@@ -58,8 +58,8 @@ const PhoneTable = (props) => {
     },
     {
       title: "PhoneStatus",
-      dataIndex: "phoneStatus",
-      key: "phoneStatus",
+      dataIndex: "phonestatus",
+      key: "phonestatus",
       //居中显示
       align: "center",
       width: 150,
@@ -67,16 +67,16 @@ const PhoneTable = (props) => {
         return (
           <Tag
             color={
-              record.phoneStatus === "0"
+              record.phonestatus === "0"
                 ? "blue"
-                : record.phoneStatus === "1"
+                : record.phonestatus === "1"
                 ? "green"
                 : "red"
             }
           >
-            {record.phoneStatus === "0"
+            {record.phonestatus === "0"
               ? "unuse"
-              : record.phoneStatus === "1"
+              : record.phonestatus === "1"
               ? "using"
               : "ban"}
           </Tag>
@@ -122,11 +122,11 @@ const PhoneTable = (props) => {
   // 编辑数据
   const handleEdit = (record) => {
     const newRecord = {
-      phoneNumber: record.phoneNumber,
+      phoneNumber: record.phonenumber,
       code: record.code,
     };
 
-    fetch("https://dama-card.vercel.app/api/updataCode", {
+    fetch("http://localhost:3000/api/updataCode", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -144,9 +144,7 @@ const PhoneTable = (props) => {
     console.log("edit", record);
   };
   const getUnserPhone = () => {
-    fetch(
-      `https://dama-card.vercel.app/api/getPhoneNumbersByStatus?phoneStatus=1`
-    )
+    fetch(`http://localhost:3000/api/getPhoneNumbersByStatus?phoneStatus=1`)
       .then((response) => response.json())
       .then((data) => {
         // console.log(data.rows);

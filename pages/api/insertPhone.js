@@ -1,4 +1,4 @@
-import { insertPhone } from "../../services/dbService";
+import { insertPhone } from "../../services/pgService";
 import Cors from "cors";
 
 // 初始化 CORS 中间件
@@ -19,14 +19,29 @@ function runMiddleware(req, res, fn) {
 }
 
 // 辅助函数：包装 insertPhone 为 Promise
-function insertPhonePromise(phoneNumber, phoneStatus) {
+function insertPhonePromise(
+  phonenumber,
+  code,
+  codestatus,
+  phonestatus,
+  log,
+  createTime
+) {
   return new Promise((resolve, reject) => {
-    insertPhone(phoneNumber, phoneStatus, (err, rows) => {
-      if (err) {
-        return reject(err);
+    insertPhone(
+      phonenumber,
+      code,
+      codestatus,
+      phonestatus,
+      log,
+      createTime,
+      (err, rows) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(rows);
       }
-      resolve(rows);
-    });
+    );
   });
 }
 
@@ -39,15 +54,23 @@ export default async function handler(req, res) {
   switch (method) {
     case "POST":
       try {
-        const { phoneNumber, phoneStatus } = body;
-        if (!phoneNumber || !phoneStatus) {
+        const { phonenumber, code, codestatus, phonestatus, log, createtime } =
+          body;
+        if (!phonenumber || !phonestatus) {
           return res.status(400).json({
             error: "Missing required parameters: phoneNumber and phoneStatus",
           });
         }
 
         // 等待 insertPhone 完成
-        const rows = await insertPhonePromise(phoneNumber, phoneStatus);
+        const rows = await insertPhonePromise(
+          phonenumber,
+          code,
+          codestatus,
+          phonestatus,
+          log,
+          createtime
+        );
         res
           .status(200)
           .json({ rows, message: "Insert phone success", code: 200 });

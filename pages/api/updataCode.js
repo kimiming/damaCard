@@ -1,4 +1,5 @@
-import { insertUpdateCode } from "../../services/dbService";
+// import { insertUpdateCode } from "../../services/dbService";
+import { insertUpdateCode } from "../../services/pgService";
 import Cors from "cors";
 
 // 初始化 CORS 中间件

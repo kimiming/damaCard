@@ -1,4 +1,4 @@
-import { getAllPhoneNumbers } from "../../services/dbService";
+import { getAllPhoneNumbers } from "../../services/pgService";
 import Cors from "cors";
 
 // 初始化 CORS 中间件
@@ -41,6 +41,8 @@ export default async function handler(req, res) {
       try {
         // 等待 getAllPhoneNumbers 完成
         const rows = await getAllPhoneNumbersPromise();
+        console.log("getAllPhoneNumbers", rows);
+
         res.status(200).json(rows);
       } catch (err) {
         res.status(500).json({ error: err.message });
@@ -51,3 +53,20 @@ export default async function handler(req, res) {
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
+
+// // pages/api/getAllPhoneNumbers.js
+// import { getAllPhoneNumbers } from "../../services/pgService";
+
+// export default async function handler(req, res) {
+//   if (req.method === "GET") {
+//     getAllPhoneNumbers((err, rows) => {
+//       if (err) {
+//         console.error("API error:", err);
+//         return res.status(500).json({ error: "Database query failed" });
+//       }
+//       res.status(200).json(rows);
+//     });
+//   } else {
+//     res.status(405).json({ error: "Method not allowed" });
+//   }
+// }

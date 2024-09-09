@@ -9,52 +9,52 @@ const PhoneTable = () => {
   const initialData = [
     {
       key: "1",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
     {
       key: "2",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
     {
       key: "3",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
     {
       key: "4",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
     {
       key: "5",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
     {
       key: "6",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
     {
       key: "7",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
     {
       key: "8",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
     {
       key: "9",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
     {
       key: "10",
-      phoneNumber: "",
+      phonenumber: "",
       code: "",
     },
   ];
@@ -68,14 +68,14 @@ const PhoneTable = () => {
     },
     {
       title: "Phone",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
+      dataIndex: "phonenumber",
+      key: "phonenumber",
       render: (text, record) => {
         return (
           <Input
-            value={record.phoneNumber}
+            value={record.phonenumber}
             placeholder="please input"
-            onChange={(e) => handleInputChange(e, record, "phoneNumber")}
+            onChange={(e) => handleInputChange(e, record, "phonenumber")}
           />
         );
       },
@@ -100,7 +100,7 @@ const PhoneTable = () => {
     const newValue = e.target.value.replace(/[^0-9]/g, "");
     const updatedData = data.map((item) =>
       item.key === record.key
-        ? { ...item, [dataIndex]: newValue, phoneStatus: "0" }
+        ? { ...item, [dataIndex]: newValue, phonestatus: "0" }
         : item
     );
     setData(updatedData);
@@ -114,11 +114,15 @@ const PhoneTable = () => {
   // 编辑数据
   const handleEdit = (record) => {
     const newRecord = {
-      phoneNumber: record.phoneNumber,
-      phoneStatus: "0",
+      phonenumber: record.phonenumber,
+      code: "",
+      codestatus: "0",
+      phonestatus: "0",
+      log: "First insert for user",
+      createtime: new Date().toLocaleString(),
     };
 
-    fetch("https://dama-card.vercel.app/api/insertPhone", {
+    fetch("http://localhost:3000/api/insertPhone", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -136,9 +140,9 @@ const PhoneTable = () => {
   };
 
   const handleAllBtn = () => {
-    const filteredData = data.filter((item) => item.phoneNumber !== "");
+    const filteredData = data.filter((item) => item.phonenumber !== "");
     console.log("update all:", filteredData.length);
-    fetch("https://dama-card.vercel.app/api/insertMultiplePhone", {
+    fetch("http://localhost:3000/api/insertMultiplePhone", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
