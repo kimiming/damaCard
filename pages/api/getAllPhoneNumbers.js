@@ -53,20 +53,3 @@ export default async function handler(req, res) {
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
-
-// // pages/api/getAllPhoneNumbers.js
-// import { getAllPhoneNumbers } from "../../services/pgService";
-
-// export default async function handler(req, res) {
-//   if (req.method === "GET") {
-//     getAllPhoneNumbers((err, rows) => {
-//       if (err) {
-//         console.error("API error:", err);
-//         return res.status(500).json({ error: "Database query failed" });
-//       }
-//       res.status(200).json(rows);
-//     });
-//   } else {
-//     res.status(405).json({ error: "Method not allowed" });
-//   }
-// }

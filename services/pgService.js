@@ -13,6 +13,7 @@ const pool = new Pool({
 async function initializeDatabase() {
   const client = await pool.connect();
   try {
+    // 创建 phone_codes 表
     await client.query(`
       CREATE TABLE IF NOT EXISTS phone_codes (
         id SERIAL PRIMARY KEY,
@@ -25,6 +26,19 @@ async function initializeDatabase() {
         log TEXT
       )
     `);
+
+    // 创建 users 表
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL
+      )
+    `);
+
+    console.log("Database tables initialized successfully");
+  } catch (error) {
+    console.error("Error initializing database tables:", error);
   } finally {
     client.release();
   }
