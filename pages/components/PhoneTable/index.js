@@ -122,7 +122,7 @@ const PhoneTable = () => {
       createtime: new Date().toLocaleString(),
     };
 
-    fetch("http://localhost:3000/api/insertPhone", {
+    fetch("https://dama-card.vercel.app/api/insertPhone", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -142,7 +142,7 @@ const PhoneTable = () => {
   const handleAllBtn = () => {
     const filteredData = data.filter((item) => item.phonenumber !== "");
     console.log("update all:", filteredData.length);
-    fetch("http://localhost:3000/api/insertMultiplePhone", {
+    fetch("https://dama-card.vercel.app/api/insertMultiplePhone", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
