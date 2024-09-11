@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         const rows = await getCodeByPhoneNumberPromise(phonenumber);
         console.log("getcodeRes:", rows);
 
-        res.status(200).json({ rows, message: "success" });
+        res.status(200).json({ rows, message: "success", codeStatus: 200 });
       } catch (err) {
         console.log("getPhoneNumbersByStatus", err);
 

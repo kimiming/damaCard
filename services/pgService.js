@@ -13,7 +13,6 @@ const pool = new Pool({
 async function initializeDatabase() {
   const client = await pool.connect();
   try {
-    // 创建 phone_codes 表
     await client.query(`
       CREATE TABLE IF NOT EXISTS phone_codes (
         id SERIAL PRIMARY KEY,
@@ -26,19 +25,6 @@ async function initializeDatabase() {
         log TEXT
       )
     `);
-
-    // 创建 users 表
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        username VARCHAR(255) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL
-      )
-    `);
-
-    console.log("Database tables initialized successfully");
-  } catch (error) {
-    console.error("Error initializing database tables:", error);
   } finally {
     client.release();
   }
@@ -69,10 +55,10 @@ export const insertPhone = async (
   codestatus,
   phonestatus,
   log,
-  createtime,
   callback
 ) => {
   try {
+    const createtime = new Date().toISOString();
     const result = await pool.query(
       `
       INSERT INTO phone_codes (phonenumber, code, codestatus, phonestatus, log,createtime)
@@ -80,6 +66,7 @@ export const insertPhone = async (
       ON CONFLICT (phonenumber) DO UPDATE SET code=$2, codestatus=$3, phonestatus=$4, log=$5,createtime=$6
       RETURNING id
     `,
+
       [phonenumber, code, codestatus, phonestatus, log, createtime]
     );
     callback(null, result.rows[0].id);
@@ -94,18 +81,19 @@ export const insertMultiplePhone = async (phoneRecords, callback) => {
     await client.query("BEGIN"); // 开始事务
 
     const insertQuery = `
-        INSERT INTO phone_codes (phonenumber, phonestatus, codestatus, createtime)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO phone_codes (phonenumber, phonestatus, codestatus, createtime,log)
+        VALUES ($1, $2, $3, $4,$5)
         ON CONFLICT (phoneNumber) DO NOTHING
       `;
 
-    for (const { phonenumber, phonestatus } of phoneRecords) {
+    for (const { phonenumber, phonestatus, log } of phoneRecords) {
       const createtime = new Date().toISOString();
       await client.query(insertQuery, [
         phonenumber,
         phonestatus,
         "0",
         createtime,
+        log,
       ]);
     }
 
@@ -147,16 +135,21 @@ export const insertUpdateCode = (phonenumber, code, callback) => {
 };
 
 //根据phoneNumber来更新phoneStatus
-export const updatePhoneStatus = async (phonenumber, phonestatus) => {
+export const updatePhoneStatus = async (
+  phonenumber,
+  phonestatus,
+  codestatus,
+  log
+) => {
   const client = await pool.connect();
   try {
     const result = await client.query(
       `
         UPDATE phone_codes 
-        SET phonestatus = $1, updatetime = $2 
-        WHERE phonenumber = $3
+        SET phonestatus = $1, updatetime = $2 ,codestatus=$3,log=$4
+        WHERE phonenumber = $5
       `,
-      [phonestatus, new Date().toISOString(), phonenumber]
+      [phonestatus, new Date().toISOString(), codestatus, log, phonenumber]
     );
 
     return result.rowCount;

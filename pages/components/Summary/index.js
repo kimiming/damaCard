@@ -117,6 +117,7 @@ const SummaryPhone = (props) => {
       key: "createtime",
       align: "center",
       width: 200,
+      render: (text) => (text ? formatDate(text) : ""),
     },
     {
       title: "UpdateTime",

@@ -1,4 +1,5 @@
 // import { getOneUnusePhoneNumber } from "../../services/dbService";
+import { message } from "antd";
 import { getOneUnusePhoneNumber } from "../../services/pgService";
 import Cors from "cors";
 
@@ -42,7 +43,7 @@ export default async function handler(req, res) {
       try {
         // 等待 getAllPhoneNumbers 完成
         const rows = await getOneUnusePhoneNumberPromise();
-        res.status(200).json(rows);
+        res.status(200).json({ ...rows, message: "success", codeStatus: 200 });
       } catch (err) {
         res.status(500).json({ error: err.message });
       }
