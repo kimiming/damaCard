@@ -4,7 +4,7 @@ import Cors from "cors";
 
 // 初始化 CORS 中间件
 const cors = Cors({
-  methods: ["POST"],
+  methods: ["PUT"],
 });
 
 // 辅助函数：处理 CORS 请求
