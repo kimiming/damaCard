@@ -20,12 +20,12 @@ function runMiddleware(req, res, fn) {
 }
 
 // 辅助函数：包装 insertPhone 为 Promise
-function updatePhoneStatusPromise(phoneNumber, codeStatus, phoneStatus, log) {
+function updatePhoneStatusPromise(phonenumber, codestatus, phonestatus, log) {
   return new Promise((resolve, reject) => {
     updatePhoneStatus(
-      phoneNumber,
-      codeStatus,
-      phoneStatus,
+      phonenumber,
+      codestatus,
+      phonestatus,
       log,
       (err, rows) => {
         if (err) {
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     case "PUT":
       try {
         const { phonenumber, codestatus, phonestatus, log } = body;
-        if ((!phonenumber || !codestatus, codestatus, log)) {
+        if (!phonenumber || !codestatus) {
           return res.status(400).json({
             error: "Missing required parameters: phoneNumber and phoneStatus",
           });
