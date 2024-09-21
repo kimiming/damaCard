@@ -84,20 +84,20 @@ const SummaryPhone = (props) => {
         return (
           <Tag
             color={
-              record.phoneStatus === "0"
+              record.phonestatus === "0"
                 ? "volcano"
-                : record.phoneStatus === "1"
+                : record.phonestatus === "1"
                 ? "green"
-                : record.phoneStatus === "2"
+                : record.phonestatus === "2"
                 ? "blue"
                 : "red"
             }
           >
-            {record.phoneStatus === "0"
+            {record.phonestatus === "0"
               ? "unuse"
-              : record.phoneStatus === "1"
+              : record.phonestatus === "1"
               ? "using"
-              : record.phoneStatus === "2"
+              : record.phonestatus === "2"
               ? "used"
               : "ban"}
           </Tag>
@@ -114,16 +114,16 @@ const SummaryPhone = (props) => {
         return (
           <Tag
             color={
-              record.codeStatus === "0"
+              record.codestatus === "0"
                 ? "volcano"
-                : record.codeStatus === "1"
+                : record.codestatus === "1"
                 ? "green"
                 : "red"
             }
           >
-            {record.codeStatus === "0"
+            {record.codestatus === "0"
               ? "no input"
-              : record.codeStatus === "1"
+              : record.codestatus === "1"
               ? "availble"
               : "unavailable"}
           </Tag>
