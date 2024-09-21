@@ -80,20 +80,20 @@ const PhoneTable = () => {
         );
       },
     },
-    {
-      title: "Action",
-      align: "center",
-      render: (text, record, index) => {
-        return (
-          <Space>
-            {contextHolder}
-            <Button type="primary" onClick={() => handleEdit(record)}>
-              UP
-            </Button>
-          </Space>
-        );
-      },
-    },
+    // {
+    //   title: "Action",
+    //   align: "center",
+    //   render: (text, record, index) => {
+    //     return (
+    //       <Space>
+    //         {contextHolder}
+    //         <Button type="primary" onClick={() => handleEdit(record)}>
+    //           UP
+    //         </Button>
+    //       </Space>
+    //     );
+    //   },
+    // },
   ];
   // 输入框值变化
   const handleInputChange = (e, record, dataIndex) => {

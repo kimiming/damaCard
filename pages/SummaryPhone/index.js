@@ -13,7 +13,7 @@ const SummaryPhone = (props) => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:3000/api/getAllPhoneNumbers"
+        "https://dama-card.vercel.app/api/getAllPhoneNumbers"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -30,7 +30,7 @@ const SummaryPhone = (props) => {
   const handleDeleteAll = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/deleteAllPhoneCodes",
+        "https://dama-card.vercel.app/api/deleteAllPhoneCodes",
         {
           method: "DELETE",
           headers: {
@@ -61,8 +61,8 @@ const SummaryPhone = (props) => {
     },
     {
       title: "PhoneNumber",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
+      dataIndex: "phonenumber",
+      key: "phonenumber",
       width: 250,
 
       render: (txt) => <div style={{ fontWeight: "bold" }}>{txt}</div>,
@@ -77,8 +77,8 @@ const SummaryPhone = (props) => {
     {
       title: "PhoneStatus",
       width: 150,
-      dataIndex: "phoneStatus",
-      key: "phoneStatus",
+      dataIndex: "phonestatus",
+      key: "phonestatus",
       align: "center",
       render: (txt, record) => {
         return (
@@ -106,8 +106,8 @@ const SummaryPhone = (props) => {
     },
     {
       title: "CodeStatus",
-      dataIndex: "codeStatus",
-      key: "codeStatus",
+      dataIndex: "codestatus",
+      key: "codestatus",
       align: "center",
       width: 150,
       render: (txt, record) => {
@@ -132,24 +132,24 @@ const SummaryPhone = (props) => {
     },
     {
       title: "CreateTime",
-      dataIndex: "createTime",
-      key: "createTime",
+      dataIndex: "createtime",
+      key: "createtime",
       align: "center",
       width: 200,
       render: (text) => formatDate(text),
     },
     {
       title: "UpdateTime",
-      dataIndex: "updateTime",
-      key: "updateTime",
+      dataIndex: "updatetime",
+      key: "updatetime",
       align: "center",
       width: 200,
       render: (text) => (text ? formatDate(text) : ""),
     },
     {
       title: "Log",
-      dataIndex: "desc",
-      key: "desc",
+      dataIndex: "log",
+      key: "log",
     },
   ];
 
@@ -175,7 +175,11 @@ const SummaryPhone = (props) => {
           loading={loading}
         />
       </div>
-      <Button type="primary" onClick={handleDeleteAll}>
+      <Button
+        type="primary"
+        onClick={handleDeleteAll}
+        style={{ marginTop: 20, marginLeft: 20 }}
+      >
         删除所有
       </Button>
     </div>
