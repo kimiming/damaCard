@@ -5,6 +5,10 @@ import formatDate from "../../../utils/common";
 
 const SummaryPhone = (props) => {
   const [data, setData] = useState([]);
+  const [totalPhone, setTotalPhone] = useState(0);
+  const [invalidDate, setInvalid] = useState(0);
+  const [successDate, setSuccess] = useState(0);
+  const [unuseDate, setUnuse] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { curKey } = props;
@@ -19,6 +23,24 @@ const SummaryPhone = (props) => {
         throw new Error("Network response was not ok");
       }
       const result = await response.json();
+      let total = result?.length ? result.length : null;
+      let success = result?.filter((item) => item.phonestatus === "2")
+        ? result.filter((item) => item.phonestatus === "2").length
+        : null;
+      let unuse = result?.filter((item) => item.phonestatus === "0")
+        ? result.filter((item) => item.phonestatus === "0").length
+        : null;
+      let invalid = result?.filter(
+        (item) => item.phonestatus === "3" || item.phonestatus === "1"
+      )
+        ? result.filter(
+            (item) => item.phonestatus === "3" || item.phonestatus === "1"
+          ).length
+        : null;
+      setSuccess(success);
+      setUnuse(unuse);
+      setInvalid(invalid);
+      setTotalPhone(total);
       setData(result);
     } catch (err) {
       setError(err);
@@ -137,6 +159,12 @@ const SummaryPhone = (props) => {
   return (
     <div>
       <div style={{ marginRight: 20, marginLeft: 20 }}>
+        <div style={{ margin: 10, fontSize: 20 }}>
+          <span style={{ marginRight: 20 }}>TOTAL：{totalPhone} items,</span>
+          <span style={{ marginRight: 20 }}>UNUSE：{unuseDate} items,</span>
+          <span style={{ marginRight: 20 }}>SUCCESS：{successDate} items,</span>
+          <span style={{ marginRight: 20 }}>Invalid：{invalidDate} items</span>
+        </div>
         <Table
           columns={columns}
           dataSource={data}
