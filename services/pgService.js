@@ -123,7 +123,7 @@ export const deleteAllPhoneNumbers = async (callback) => {
 export const insertUpdateCode = (phonenumber, code, callback) => {
   const updateTime = new Date(); // 假设使用当前时间
   pool.query(
-    "UPDATE phone_codes SET code = $1, codeStatus = $2, phoneStatus = $3, updateTime = $4 WHERE phonenumber = $5",
+    "UPDATE phone_codes SET code = $1, codestatus = $2, phonestatus = $3, updatetime = $4 WHERE phonenumber = $5",
     [code, "1", "2", updateTime, phonenumber],
     function (err, result) {
       if (err) {
@@ -141,8 +141,8 @@ export const asPhonestatus1AndupdateTimeupdateCodeStatus = async () => {
     const result = await client.query(
       `
         UPDATE phone_codes 
-        SET codeStatus = $1, phoneStatus = $2, updateTime = $3
-        WHERE phoneStatus = $4 AND updateTime < NOW() - INTERVAL '1 minutes'
+        SET codestatus = $1, phonestatus = $2, updatetime = $3
+        WHERE phonestatus = $4 AND updatetime < NOW() - INTERVAL '1 minutes'
       `,
       ["2", "3", new Date().toISOString(), "1"]
     );
