@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const checkUserAuthentication = async () => {
       const token = localStorage.getItem("token");
-      console.log("Token:", token); // 添加调试信息
+      // console.log("Token:", token); // 添加调试信息
       if (token) {
         try {
           // 你可以在这里添加一个简单的验证逻辑，例如检查token是否为空字符串

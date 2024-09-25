@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Space, Table, Tag, Input, Divider, Button, message } from "antd";
 import styles from "./index.module.less"; // 引入CSS Modules样式
+import formatDate from "../../../utils/common";
 
 const PhoneTable = (props) => {
   const { curKey } = props;
@@ -83,7 +84,22 @@ const PhoneTable = (props) => {
         );
       },
     },
-
+    {
+      title: "CreateTime",
+      dataIndex: "createtime",
+      key: "createtime",
+      align: "center",
+      width: 200,
+      render: (text) => (text ? formatDate(text) : ""),
+    },
+    {
+      title: "UpdateTime",
+      dataIndex: "updatetime",
+      key: "updatetime",
+      align: "center",
+      width: 200,
+      render: (text) => (text ? formatDate(text) : ""),
+    },
     {
       title: "Action",
       width: 150,
@@ -149,26 +165,31 @@ const PhoneTable = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data.rows);
-        setData(data.rows);
+        console.log("old", data.rows);
+        //根据date.rows[0].updatetime排序
+        let newRows = data.rows.sort(
+          (a, b) =>
+            new Date(b.updatetime).getTime() - new Date(a.updatetime).getTime()
+        );
+        setData(newRows);
       });
   };
-  const updateCodestatus = () => {
-    fetch(`https://dama-card.vercel.app/api/autoUpdatephoenstatus`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data.rows);
-        setData(data.rows);
-      });
-  };
+  // const updateCodestatus = () => {
+  //   fetch(`https://dama-card.vercel.app/api/autoUpdatephoenstatus`, {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       // console.log(data.rows);
+  //       setData(data.rows);
+  //     });
+  // };
   useEffect(() => {
     getUnserPhone();
-    updateCodestatus();
+    // updateCodestatus();
   }, [curKey]);
   return (
     <div>
