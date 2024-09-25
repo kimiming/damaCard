@@ -138,20 +138,30 @@ export const insertUpdateCode = (phonenumber, code, callback) => {
 export const asPhonestatus1AndupdateTimeupdateCodeStatus = async () => {
   const client = await pool.connect();
   try {
-    const result = await client.query(
-      `
-        UPDATE phone_codes 
-        SET codestatus = $1, phonestatus = $2, updatetime = $3
-        WHERE phonestatus = $4 AND updatetime < NOW() - INTERVAL '1 minutes'
-      `,
-      ["2", "3", new Date().toISOString(), "1"]
-    );
+    await client.query("BEGIN"); // 开始事务
 
-    return result.rowCount;
-  } catch (err) {
-    throw err;
+    const updateQuery = `
+      UPDATE phone_codes 
+      SET phoneStatus = $1, codeStatus = $2, updateTime = $3
+      WHERE phoneStatus = $4 AND updateTime < NOW() - INTERVAL '3 minutes'
+    `;
+
+    const result = await client.query(updateQuery, [
+      "3",
+      "2",
+      new Date().toISOString(),
+      1,
+    ]);
+
+    await client.query("COMMIT"); // 提交事务
+    console.log(`更新了 ${result.rowCount} 行`); // 输出更新的行数
+    callback(null, `更新成功：${result.rowCount} 行被更新`);
+  } catch (e) {
+    await client.query("ROLLBACK"); // 发生错误时回滚事务
+    console.error("更新错误:", e); // 输出错误信息
+    callback(e);
   } finally {
-    client.release();
+    client.release(); // 释放数据库连接
   }
 };
 
