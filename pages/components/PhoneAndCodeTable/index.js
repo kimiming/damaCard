@@ -1,23 +1,27 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Space, Table, Tag, Input, Divider, Button, message } from "antd";
+import {
+  Space,
+  Table,
+  Tag,
+  Input,
+  Divider,
+  Button,
+  message,
+  Spin,
+  Empty,
+} from "antd";
 import styles from "./index.module.less"; // 引入CSS Modules样式
 import formatDate from "../../../utils/common";
 
 const PhoneTable = (props) => {
   const { curKey } = props;
   const [messageApi, contextHolder] = message.useMessage();
-  const initialData = [
-    {
-      key: "1",
-      id: "",
-      phonenumber: "",
-      code: "",
-      phonestatus: "0",
-    },
-  ];
-  const [data, setData] = useState(initialData);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [data, setData] = useState([]);
   const columns = [
     {
       title: "ID",
@@ -160,33 +164,68 @@ const PhoneTable = (props) => {
     console.log("edit", record);
   };
   const getUnserPhone = () => {
-    fetch(
-      `https://dama-card.vercel.app/api/getPhoneNumbersByStatus?phoneStatus=1`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("old", data.rows);
-        //根据date.rows[0].updatetime排序
-        let newRows = data.rows.sort(
-          (a, b) =>
-            new Date(b.updatetime).getTime() - new Date(a.updatetime).getTime()
-        );
-        setData(newRows);
-      });
+    try {
+      setLoading(true);
+      fetch(
+        `https://dama-card.vercel.app/api/getPhoneNumbersByStatus?phoneStatus=1`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log("old", data.rows);
+          //根据date.rows[0].updatetime排序
+          if (data.rows.length === 0) {
+            messageApi.warning("No phone number is using");
+            return;
+          }
+          //选择出时间超过当前3分钟的过期的手机号码
+          let curData = data.rows;
+          let overTimeData = curData.filter(
+            (item) =>
+              new Date().getTime() - new Date(item.updatetime).getTime() >
+              180000
+          );
+          curData = curData.filter(
+            (item) => !overTimeData.some((item2) => item2.id === item.id)
+          );
+          //将过期的手机号码的状态改为3
+          for (let i = 0; i < overTimeData.length; i++) {
+            try {
+              fetch(`https://dama-card.vercel.app/api/updatePhoneStatus`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  phonenumber: overTimeData[i].phonenumber,
+                  codestatus: 2,
+                  phonestatus: 3,
+                  log: "time out for getting code",
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log(data);
+                });
+            } catch (e) {
+              setError(err);
+              console.log(e);
+            }
+          }
+          console.log("overTimeData", overTimeData);
+          //将curdata中的overTimeData的数据过滤掉
+
+          let newRows = curData.sort(
+            (a, b) =>
+              new Date(b.updatetime).getTime() -
+              new Date(a.updatetime).getTime()
+          );
+          setData(newRows);
+        });
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   };
-  // const updateCodestatus = () => {
-  //   fetch(`https://dama-card.vercel.app/api/autoUpdatephoenstatus`, {
-  //     method: "PUT",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       // console.log(data.rows);
-  //       setData(data.rows);
-  //     });
-  // };
+
   useEffect(() => {
     getUnserPhone();
     // updateCodestatus();
@@ -198,6 +237,16 @@ const PhoneTable = (props) => {
           columns={columns}
           dataSource={data}
           rowClassName={getRowClassName}
+          locale={{
+            emptyText: loading ? (
+              <Spin />
+            ) : error ? (
+              <Empty description={error.message} />
+            ) : (
+              "No Data"
+            ),
+          }}
+          loading={loading}
         />
       </div>
     </div>
