@@ -41,7 +41,8 @@ const SummaryPhone = (props) => {
       setUnuse(unuse);
       setInvalid(invalid);
       setTotalPhone(total);
-      setData(result);
+      let newRes = result.sort((a, b) => a.id - b.id);
+      setData(newRes);
     } catch (err) {
       setError(err);
     } finally {
