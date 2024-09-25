@@ -153,8 +153,17 @@ const PhoneTable = (props) => {
         setData(data.rows);
       });
   };
+  const updateCodestatus = () => {
+    fetch(`https://dama-card.vercel.app/api/autoUpdatephoenstatus`)
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data.rows);
+        setData(data.rows);
+      });
+  };
   useEffect(() => {
     getUnserPhone();
+    updateCodestatus();
   }, [curKey]);
   return (
     <div>

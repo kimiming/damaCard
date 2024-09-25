@@ -134,6 +134,27 @@ export const insertUpdateCode = (phonenumber, code, callback) => {
   );
 };
 
+//根据判断phoneStatus为1的时候并且updateTime和当前的时间超过三分钟后更新codeStatus为2和phoneStatus为3
+export const asPhonestatus1AndupdateTimeupdateCodeStatus = async () => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      `
+        UPDATE phone_codes 
+        SET codeStatus = $1, phoneStatus = $2, updateTime = $3
+        WHERE phoneStatus = $4 AND updateTime < NOW() - INTERVAL '1 minutes'
+      `,
+      ["2", "3", new Date().toISOString(), "1"]
+    );
+
+    return result.rowCount;
+  } catch (err) {
+    throw err;
+  } finally {
+    client.release();
+  }
+};
+
 //根据phoneNumber来更新phoneStatus
 export const updatePhoneStatus = async (
   phonenumber,
