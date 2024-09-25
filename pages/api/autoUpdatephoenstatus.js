@@ -5,7 +5,7 @@ import Cors from "cors";
 
 // 初始化 CORS 中间件
 const cors = Cors({
-  methods: ["GET"],
+  methods: ["PUT"],
 });
 
 // 辅助函数：处理 CORS 请求
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
   const { method } = req;
 
   switch (method) {
-    case "GET":
+    case "PUT":
       try {
         // 等待 getAllPhoneNumbers 完成
         const rows = await asPhonestatus1AndupdateTimeupdateCodeStatusPromise();
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       }
       break;
     default:
-      res.setHeader("Allow", ["GET"]);
+      res.setHeader("Allow", ["PUT", "POST"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
