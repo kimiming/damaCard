@@ -182,7 +182,7 @@ const PhoneTable = (props) => {
           let overTimeData = curData.filter(
             (item) =>
               new Date().getTime() - new Date(item.updatetime).getTime() >
-              180000
+              600000
           );
           curData = curData.filter(
             (item) => !overTimeData.some((item2) => item2.id === item.id)
